@@ -1,0 +1,16 @@
+{
+    "544fcfb3-be56-46e7-9ca4-4c6e7bf17e5b": [
+        {
+            "prompt": "Context: play, classic, music, youtube\nplay a classic music from youtube",
+            "response": "Here are some classic music options:\n\"Moonlight Sonata\" by Ludwig van Beethoven: A timeless piano piece with a dreamy, introspective quality.\n\"Clair de Lune\" by Claude Debussy: A beautiful, soothing piano piece with a soft, gentle quality.\n\"Symphony No. 9\" by Anton\u00edn Dvo\u0159\u00e1k: A classic symphony with a lively, energetic quality.\nTo play these songs on YouTube, simply search for the song title and composer, and select the video you'd like to play.\n"
+        },
+        {
+            "prompt": "Context: play, classic, music, youtube, give, robot, script, play, classic, song, youtube\ngive the robot script to play classic song in the youtube",
+            "response": "Here is a simple robot script to play a classic song on YouTube:\nYouTube Classic Song Player Script\nimport webbrowser\nimport pywhatkit\n\ndef play_classic_song(song_name):\n    # Open YouTube in the default web browser\n    url = f\"https://www.youtube.com/results?search_query={song_name}\"\n    webbrowser.open(url)\n\n    # Use pywhatkit to play the song\n    pywhatkit.playonyt(song_name)\n\n# Example usage:\nplay_classic_song(\"Moonlight Sonata\")\nTo use this script:\nInstall the required libraries by running pip install pywhatkit in your terminal/command prompt.\nSave this script to a file (e.g., classic_song_player.py).\nRun the script using Python (e.g., python classic_song_player.py).\nReplace \"Moonlight Sonata\" with the name of your desired classic song.\nNote: This script uses the pywhatkit library to play the song on YouTube. If you don't have this library installed, you can install it using pip.\n"
+        },
+        {
+            "prompt": "Context: play, classic, music, youtube, give, robot, script, play, classic, song, youtube, .robot, script\n.robot script",
+            "response": "Here is a simple .robot script to play a classic song on YouTube:\nYouTube Classic Song Player .robot Script\n*** Settings ***\nLibrary  Process\n\n*** Variables ***\n${SONG_NAME}  Moonlight Sonata\n\n*** Test Cases ***\nPlay Classic Song\n  Open Browser  https://www.youtube.com/results?search_query=${SONG_NAME}\n  Sleep  5 seconds\n  Close Browser\nTo use this script:\nInstall the Robot Framework by running pip install robotframework in your terminal/command prompt.\nInstall the SeleniumLibrary by running pip install robotframework-seleniumlibrary in your terminal/command prompt.\nSave this script to a file (e.g., classic_song_player.robot).\nRun the script using the Robot Framework (e.g., robot classic_song_player.robot).\nReplace Moonlight Sonata with the name of your desired classic song.\nNote: This script uses the SeleniumLibrary to open a web browser and navigate to the YouTube search results page.\n"
+        }
+    ]
+}

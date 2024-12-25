@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Interface</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .chat-container {
+            height: 500px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .chat-messages {
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #fff;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .message.user {
+            background-color: #f7f7f7;
+            color: #333;
+            animation: slideIn 0.5s;
+        }
+        .message.bot {
+            background-color: #e5e5e5;
+            color: #666;
+            animation: slideIn 0.5s;
+        }
+        .input-group {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #send-btn {
+            background-color: #4CAF50;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+        #send-btn:hover {
+            background-color: #3e8e41;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container chat-container mt-5 p-0 animate__animated animate__fadeIn">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Chatbot
+                    </div>
+                    <div class="card-body chat-messages" id="chat-messages">
+                        <!-- Messages will be displayed here -->
+                    </div>
+                    <div class="card-footer">
+                        <div class="input-group">
+                            <input type="text" id="user-input" class="form-control" placeholder="Type a message...">
+                            <div class="input-group-append">
+                                <button class="btn" id="send-btn">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.js"></script>
+    <script>
+        // Get elements
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+
+        // Chatbot response function
+        function getBotResponse(userMessage) {
+            // Replace this with your chatbot's response logic
+            return 'Bot: ' + userMessage + ' received!';
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userMessage = userInput.value.trim();
+            if (userMessage !== '') {
+                // Display user message
+                const userMsgElement = document.createElement('div');
+                userMsgElement.classList.add('message', 'user', 'animate__animated', 'animate__slideInLeft');
+                userMsgElement.textContent = 'You: ' + userMessage;
+                chatMessages.appendChild(userMsgElement);
+
+                // Get bot response
+                const botResponse = getBotResponse(userMessage);
+
+                // Display bot response
+                const botMsgElement = document.createElement('div');
+                botMsgElement.classList.add('message', 'bot', 'animate__animated', 'animate__slideInRight');
+                botMsgElement.textContent = botResponse;
+                chatMessages.appendChild(botMsgElement);
+
+                // Scroll to bottom of chat
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Clear user input
+                userInput.value = '';
+            }
+        }
+
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+                // Pressing Enter key sends message
+                userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Focus on input field on page load
+        userInput.focus();
+
+        // Initialize chat log
+        const initMessage = document.createElement('div');
+        initMessage.classList.add('message', 'bot', 'animate__animated', 'animate__slideInRight');
+        initMessage.textContent = 'Bot: Hello! How can I assist you today?';
+        chatMessages.appendChild(initMessage);
+
+        // Scroll to bottom of chat on page load
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    </script>
+</body>
+</html>

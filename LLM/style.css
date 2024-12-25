@@ -1,0 +1,32 @@
+/* Add more styling for a more visually appealing interface */
+.chat-container {
+    /* ... */
+    background-color: #f5f5f5;
+  }
+  
+  .chat-messages {
+    /* ... */
+    padding: 20px;
+  }
+  
+  .chat-message {
+    /* ... */
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .user-message {
+    /* ... */
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .bot-message {
+    /* ... */
+    background-color: #e0e0e0;
+  }
+  
+  .input-container {
+    /* ... */
+    padding: 10px;
+  }

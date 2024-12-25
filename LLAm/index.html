@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deus Ex UI</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #F0F0F0; /* Light grey background */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #E0E0E0; /* Lighter grey for circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text .logo-image {
+            width: 40px; /* Size of the image */
+            height: 40px;
+            margin: 0 10px;
+        }
+
+        .input-container {
+            margin-top: 50px;
+        }
+
+        .input-field {
+            width: 300px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        .input-field::placeholder {
+            color: #888;
+        }
+
+        .send-button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .send-button:hover {
+            background-color: #45A049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Circle with icon and text -->
+        <div class="circle">
+            <div class="logo-text">
+                    <img src="logo.jpg" alt="logo" class="logo-image">
+                
+            </div>
+        </div>
+
+        <!-- Input field -->
+        <div class="input-container">
+            <input type="text" class="input-field" placeholder="Enter your Prompt">
+            <button class="send-button">➔</button>
+        </div>
+    </div>
+</body>
+</html>

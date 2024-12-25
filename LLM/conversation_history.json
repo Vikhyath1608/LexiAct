@@ -1,0 +1,56 @@
+{
+    "01cd1dd6-9a8a-4ade-9d9c-f3b0d47a521d": [
+        {
+            "prompt": "Context: write, robot, script, open, youtube, vedio\nwrite a robot script to open youtube vedio ",
+            "response": "Robot Script to Open YouTube Video\nThis script uses Python with the pyautogui and webbrowser libraries to open a YouTube video using a robot.\nPrerequisites\nPython installed on your system\npyautogui and webbrowser libraries installed (pip install pyautogui webbrowser)\nYouTube video URL ready\nScript\nimport pyautogui\nimport webbrowser\nimport time\n\n# YouTube video URL\nvideo_url = \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\"\n\n# Open YouTube in default web browser\nwebbrowser.open(video_url)\n\n# Wait for 5 seconds to allow the browser to open\ntime.sleep(5)\n\n# Use pyautogui to click on the play button\n# Note: This may not work if the YouTube video is not in the same position on your screen\npyautogui.click(500, 300)  # Replace with the coordinates of the play button on your screen\nHow to Use\nReplace the video_url variable with the URL of the YouTube video you want to open.\nRun the script using Python (e.g., python script.py).\nThe script will open the YouTube video in your default web browser and click the play button after 5 seconds.\nNote: This script uses pyautogui to simulate a mouse click, which may not work if the YouTube video is not in the same position on your screen. You may need to adjust the coordinates in the pyautogui.click() function to match the position of the play button on your screen.\n"
+        },
+        {
+            "prompt": "Context: write, robot, script, open, youtube, vedio, give, .robot, script\ngive a .robot script",
+            "response": "YouTube Video Opener Robot Script\nHere is a .robot script that opens a YouTube video using the Robot Framework:\n*** Settings ***\nLibrary  SeleniumLibrary\n\n*** Variables ***\n${VIDEO_URL}  https://www.youtube.com/watch?v=dQw4w9WgXcQ\n${BROWSER}  Chrome\n\n*** Test Cases ***\nOpen YouTube Video\n  Open Browser  ${BROWSER}\n  Go To  ${VIDEO_URL}\n  Click Element  xpath://button[@aria-label='Play']\n  Sleep  5 seconds\n\n*** Keywords ***\nExplanation\nThe script uses the SeleniumLibrary to interact with the web browser.\nThe ${VIDEO_URL} variable stores the URL of the YouTube video to open.\nThe ${BROWSER} variable stores the browser to use (in this case, Chrome).\nThe Open YouTube Video test case opens the browser, navigates to the YouTube video URL, clicks the play button, and waits for 5 seconds.\nHow to Run\nInstall the Robot Framework and SeleniumLibrary using pip: pip install robotframework selenium\nSave the script as a file with a .robot extension (e.g., youtube_video_opener.robot)\nRun the script using the robot command: robot youtube_video_opener.robot\nNote: Make sure you have the Chrome browser installed and the ChromeDriver executable in your system's PATH.\n"
+        }
+    ],
+    "fc80d960-f60b-4260-ac90-4f32b0603bb0": [
+        {
+            "prompt": "Context: name\nwhat is you name",
+            "response": "Nice to meet you! My name is Meta AI, and I'm a friendly AI assistant here to help you with any questions or tasks you may have.\n"
+        },
+        {
+            "prompt": "Context: name, nmae, vikhyath\nmy nmae is Vikhyath",
+            "response": "Nice to meet you, Vikhyath! (By the way, I think you meant to type \"name\" instead of \"nmae\")\n"
+        },
+        {
+            "prompt": "Context: name, nmae, vikhyath, name\nwhat is my name",
+            "response": "Your name is Vikhyath!\n"
+        },
+        {
+            "prompt": "Context: name\nwhat is my name",
+            "response": "I don't have any information about your name. I'm a text-based AI assistant, and our conversation just started. If you'd like to share your name with me, I'd be happy to chat with you on a more personal level!\n"
+        },
+        {
+            "prompt": "Context: name, name, vikhyath\nmy name is vikhyath",
+            "response": "Nice to meet you, Vikhyath! I'll make sure to remember your name for our conversation. How's your day going so far?\n"
+        },
+        {
+            "prompt": "Context: name, name, vikhyath, hello\nhello ",
+            "response": "Hello Vikhyath!\n"
+        },
+        {
+            "prompt": "Context: name, name, vikhyath, hello\nhow are you",
+            "response": "I'm doing well, thank you for asking, Vikhyath! I'm a large language model, so I don't have feelings or emotions like humans do, but I'm always happy to chat with you and help with any questions or topics you'd like to discuss. How about you? How's your day going?\n"
+        },
+        {
+            "prompt": "Context: name, name, vikhyath, hello, name\nwhat is my name",
+            "response": "Your name is Vikhyath!\n"
+        },
+        {
+            "prompt": "Context: name, name, vikhyath, hello, name, age\nwhat is my age",
+            "response": "I don't have that information, Vikhyath! You've shared your name with me, but not your age. Would you like to share that with me too?\n"
+        }
+    ],
+    "3c1ee416-a69d-417f-89eb-795380a52bd6": [
+        {
+            "prompt": "Context: hello, meta\nhello meta",
+            "response": "Hello! It's nice to meet you. Is there something I can help you with or would you like to chat?\n"
+        }
+    ]
+}
