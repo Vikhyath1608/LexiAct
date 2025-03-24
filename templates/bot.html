@@ -1,0 +1,126 @@
+<html>
+<head>
+    <!-- SEO related -->
+    <title>Chatbot Frontend</title>
+
+    <!-- Meta related -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!-- Vendor CSS & Style files -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300|Open+Sans:300|Oxygen|Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="static/main.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row padded_row">
+            <!-- Left side content (Help section) -->
+            <div class="col-md-5">
+                <div class="chat_window">
+                    <div class="top_menu">
+                        <div class="titlle">History</div>
+                    </div>
+
+                    <!-- Help container -->
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse1">Session History</a>
+                                </h4>
+                            </div>
+                            <div id="collapse1" class="panel-collapse collapse in">
+                                <div class="panel-body" id="session-history">
+                                    <!-- Session IDs will be displayed here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right side content (Chatbot section) -->
+            <div class="col-md-7">
+                <div class="chat_window">
+                    <div class="top_menu">
+                        <div class="titlle">Lexi-Act</div>
+                    </div>
+
+                    <!-- Dynamically rendered messages -->
+                    <ul class="messages"></ul>
+
+                    <!-- Input for session ID -->
+                    <!-- <div class="bottom_wrapper">
+                        <input id="session_id_input" placeholder="Enter Session ID to switch..." />
+                        <div id="session_id_button" class="app_button_1">Switch Session</div>
+                    </div> -->
+
+                    <!-- Input for user messages -->
+                    <div class="bottom_wrapper">
+                        <button id="voice_button" class="app_button_1">
+                            <i class="fa fa-microphone"></i>
+                        </button>
+                        <input id="msg_input" placeholder="Say Hi to begin chat..." />
+                        <div id="send_button" class="app_button_1">Send</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vendor script files -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- Custom scripts -->
+    <script src="static/main.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Fetch session IDs from the server
+            $.ajax({
+                url: '/get_session_ids',
+                type: 'GET',
+                success: function(response) {
+                    const sessionHistory = $('#session-history');
+                    response.session_ids.forEach(id => {
+                        sessionHistory.append(`<div>${id}</div>`); // Display each session ID
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching session IDs: " + error);
+                }
+            });
+
+            // Add event listener for session ID button
+            $('#session_id_button').on('click', function () {
+                const sessionId = $('#session_id_input').val();
+                if (sessionId.trim()) {
+                    // AJAX call to switch session
+                    $.ajax({
+                        url: '/switch_session',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ session_id: sessionId }),
+                        success: function (response) {
+                            // Optionally: Load the conversation history for that session ID
+                            console.log("Switched to session:", sessionId);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error switching session: " + error);
+                        }
+                    });
+                } else {
+                    alert("Please enter a valid session ID!");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
