@@ -1,0 +1,9 @@
+gtts 
+pygame
+SpeechRecognition
+pyaudio
+meta_ai_api
+flask
+psutil
+opencv-python
+
