@@ -30,9 +30,8 @@ def set_volume(level):
     else:
         print("Please enter a value between 0 and 100.")
 
-while True:
-    user_input = input("Enter command (volume up/down or set volume to X percent): ").strip().lower()
-
+def voulme_control(user_input):
+    user_input = user_input.strip().lower()
     if user_input == "exit":
         print("Exiting program.")
         sys.exit()
