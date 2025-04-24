@@ -19,30 +19,29 @@ def change_volume(increase=True):
         new_volume = max(current_volume - step, 0.0)
 
     volume.SetMasterVolumeLevelScalar(new_volume, None)
-    print(f"Volume set to: {new_volume * 100:.0f}%")
+    return f"Volume set to: {new_volume * 100:.0f}%"
 
 def set_volume(level):
     volume = get_volume_interface()
 
     if 0 <= level <= 100:
         volume.SetMasterVolumeLevelScalar(level / 100, None)
-        print(f"Volume set to: {level}%")
+        return f"Volume set to: {level}%"
     else:
-        print("Please enter a value between 0 and 100.")
+        return "Please enter a value between 0 and 100."
 
-def voulme_control(user_input):
+def volume_control(user_input):
     user_input = user_input.strip().lower()
     if user_input == "exit":
-        print("Exiting program.")
-        sys.exit()
-    
+        return "Exiting program."  # Let external code handle the exit
+
     if user_input == "volume up":
-        change_volume(True)
+        return change_volume(True)
     elif user_input == "volume down":
-        change_volume(False)
+        return change_volume(False)
     else:
-        match = re.match(r"set volume to (\d+)\s*percent", user_input)
+        match = re.match(r"set volume to (\d+)\s*%", user_input)
         if match:
-            set_volume(int(match.group(1)))
+            return set_volume(int(match.group(1)))
         else:
-            print("Invalid command! Use 'volume up', 'volume down', or 'set volume to X percent'.")
+            return "Invalid command! Use 'volume up', 'volume down', or 'set volume to X percent'."
