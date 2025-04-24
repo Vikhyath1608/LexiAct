@@ -17,6 +17,7 @@ from Automation.timer import set_timer
 from Automation.set_alarm import set_alarm
 from Automation.open_file import open_file
 from Automation.caputure_vedio import video_recording
+from Automation.volume_control import volume_control
 
 app = Flask(__name__)
 MUSIC_API_URL = "http://127.0.0.1:5001"
@@ -158,7 +159,12 @@ def get_response():
         elif "video recording" in prompt.lower():
             vedio_thread = threading.Thread(target=video_recording, args=("start",), daemon=True)
             vedio_thread.start()
-            return jsonify({'response': "Video Recording started press q to stop", 'session_id': session_id})  
+            return jsonify({'response': "Video Recording started press q to stop", 'session_id': session_id})
+        
+        elif "volume" in prompt.lower():
+           response_status= volume_control(prompt.lower())
+           return jsonify({'response': response_status, 'session_id': session_id})
+              
         
         # Default AI response
         history = conversation_history.load_history()
