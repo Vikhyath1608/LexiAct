@@ -1,12 +1,15 @@
 import os
+import json
+import shutil
 import subprocess
-
-# Get the user's home directory dynamically
+import re
+from dotenv import load_dotenv
+load_dotenv()
+APP_PATHS_FILE = os.getenv("APP_PATHS_FILE")
+print(APP_PATHS_FILE)
 user_home = os.getenv("USERPROFILE")
 
-# Dictionary to map commands to application paths or direct executable names
-app_commands = {
-    # System Apps (Use subprocess for built-in Windows tools)
+apps_to_find = {
     "notepad": "notepad.exe",
     "calculator": "calc.exe",
     "cmd": "cmd.exe",
@@ -20,69 +23,124 @@ app_commands = {
     "settings": "ms-settings:",
 
     # Browsers
-    "chrome": r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-    "firefox": r"C:\Program Files\Mozilla Firefox\firefox.exe",
-    "edge": r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-    "opera": os.path.join(user_home, "AppData", "Local", "Programs", "Opera", "launcher.exe"),
+    "chrome": "chrome.exe",
+    "firefox": "firefox.exe",
+    "edge": "msedge.exe",
+    "opera": "opera.exe",
 
-    # Microsoft Office Apps
-    "word": r"C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE",
-    "excel": r"C:\Program Files\Microsoft Office\root\Office16\EXCEL.EXE",
-    "powerpoint": r"C:\Program Files\Microsoft Office\root\Office16\POWERPNT.EXE",
-    "outlook": r"C:\Program Files\Microsoft Office\root\Office16\OUTLOOK.EXE",
-    "onenote": r"C:\Program Files\Microsoft Office\root\Office16\ONENOTE.EXE",
+    # Office
+    "word": "winword.exe",
+    "excel": "excel.exe",
+    "powerpoint": "powerpnt.exe",
+    "outlook": "outlook.exe",
+    "onenote": "onenote.exe",
 
-    # Communication Apps
-    "whatsapp": os.path.join(user_home, "AppData", "Local", "Microsoft", "WindowsApps", "WhatsApp.exe"),
-    "telegram": os.path.join(user_home, "AppData", "Roaming", "Telegram Desktop", "Telegram.exe"),
-    "zoom": os.path.join(user_home, "AppData", "Roaming", "Zoom", "bin", "Zoom.exe"),
-    "discord": os.path.join(user_home, "AppData", "Local", "Discord", "Update.exe"),
+    # Communication
+    "whatsapp": "whatsapp.exe",
+    "telegram": "telegram.exe",
+    "zoom": "zoom.exe",
+    "discord": "discord.exe",
 
-    # Media Players
-    "vlc": r"C:\Program Files\VideoLAN\VLC\vlc.exe",
+    # Media
+    "vlc": "vlc.exe",
     "windows media player": "wmplayer.exe",
 
-    # Development Tools
-    "vs code": os.path.join(user_home, "AppData", "Local", "Programs", "Microsoft VS Code", "Code.exe"),
-    "pycharm": r"C:\Program Files\JetBrains\PyCharm Community Edition 2023.3\bin\pycharm64.exe",
-    "android studio": r"C:\Program Files\Android\Android Studio\bin\studio64.exe",
-    "eclipse": os.path.join(user_home, "eclipse", "java-2023-03", "eclipse", "eclipse.exe"),
+    # Development
+    "vs code": "code.exe",
+    "vscode": "code.exe",
+    "pycharm": "pycharm64.exe",
+    "android studio": "studio64.exe",
+    "eclipse": "eclipse.exe",
 
     # Others
-    "spotify": os.path.join(user_home, "AppData", "Roaming", "Spotify", "Spotify.exe"),
-    "steam": r"C:\Program Files (x86)\Steam\steam.exe",
-    "epic games": r"C:\Program Files\Epic Games\Launcher\Portal\Binaries\Win64\EpicGamesLauncher.exe",
+    "spotify": "spotify.exe",
+    "steam": "steam.exe",
+    "epic games": "epicgameslauncher.exe"
 }
 
-def open_application(command):
-    command = command.lower().strip()  # Normalize input
-    app_path = app_commands.get(command)
+
+def find_executable(name, search_paths):
+    for base_dir in search_paths:
+        for root, dirs, files in os.walk(base_dir):
+            if name.lower() in (file.lower() for file in files):
+                return os.path.join(root, name)
+    return None
+
+
+def build_app_paths():
+    search_paths = [
+        "C:\\Program Files",
+        "C:\\Program Files (x86)",
+        os.path.join(user_home, "AppData", "Local"),
+        os.path.join(user_home, "AppData", "Roaming"),
+    ]
+
+    paths = {}
+    for key, exe in apps_to_find.items():
+        if exe.startswith("ms-settings"):
+            paths[key] = exe
+        else:
+            path = shutil.which(exe) or find_executable(exe, search_paths)
+            if path:
+                paths[key] = path
+
+    with open(APP_PATHS_FILE, "w") as f:
+        json.dump(paths, f, indent=4)
+    return paths
+
+
+def load_app_paths():
+    if os.path.exists(APP_PATHS_FILE):
+        print("found.....")
+        with open(APP_PATHS_FILE, "r") as f:
+            return json.load(f)
+    else:
+        print("not found.....")
+        return build_app_paths()
+
+
+def parse_command(user_input):
+    user_input = user_input.lower().strip()
+    match = re.search(r"(open|start|launch)\s+([\w\s]+?)(?:\s+app)?$", user_input)
+    if match:
+        return match.group(2).strip()
+    return user_input
+
+
+def open_application(command, app_paths):
+    command = parse_command(command)
+    app_path = app_paths.get(command)
 
     if app_path:
-        if app_path.endswith(".exe") or app_path.startswith("ms-settings"):  # Use os.startfile for .exe and Windows settings
-            if os.path.exists(app_path) or app_path.startswith("ms-settings"):
-                try:
-                    os.startfile(app_path)  # Open the application
-                    print(f"Opening {command}...")
-                except Exception as e:
-                    print(f"Error opening {command}: {e}")
+        try:
+            if app_path.startswith("ms-settings"):
+                os.startfile(app_path)
+            elif os.path.exists(app_path):
+                os.startfile(app_path)
             else:
-                print(f"Application '{command}' not found at expected location: {app_path}")
-        else:  # Use subprocess for system utilities
-            try:
                 subprocess.Popen(app_path, shell=True)
-                print(f"Opening {command}...")
-            except Exception as e:
-                print(f"Error opening {command}: {e}")
-    elif os.path.isfile(command):  # If user provides a valid file path
+            return f"Opening {command}..."
+        except Exception as e:
+            return f"Error opening {command}: {e}"
+    elif os.path.isfile(command):
         try:
             os.startfile(command)
-            print(f"Opening file: {command}")
+            return f"Opening file: {command}"
         except Exception as e:
-            print(f"Error opening file: {e}")
+            return f"Error opening file: {e}"
     else:
-        print(f"Command '{command}' not recognized or application not found. Available commands: {list(app_commands.keys())}")
+        return f"Unknown application: '{command}'. Available: {', '.join(app_paths.keys())}"
 
-# Example: Take user input and open the corresponding app
-user_command = input("Enter application name or file path: ").strip()
-open_application(user_command)
+
+# For external use
+def run_open_app(user_command):
+    print(user_command)
+    app_paths = load_app_paths()
+    return open_application(user_command, app_paths)
+
+
+# If run directly
+if __name__ == "__main__":
+    user_command = input("Enter command: ").strip()
+    result = run_open_app(user_command)
+    print(result)
