@@ -19,6 +19,7 @@ from Automation.caputure_vedio import video_recording
 from Automation.volume_control import volume_control
 from Automation.open_app import run_open_app
 from Automation.add_contact import handle_contact_command
+from Automation.news_automation import search_google_news
 
 app = Flask(__name__)
 MUSIC_API_URL = "http://127.0.0.1:5001"
@@ -261,43 +262,60 @@ def get_response():
             message=announce_date_time("date")
             text_to_voice(message, lang='en', accent='co.in')
             return jsonify({'response': message, 'session_id': session_id})
+        
         #get time
         elif re.search(r'\btime\b', prompt.lower()) and not re.search(r'\btimer\b', prompt.lower()):
             message=announce_date_time("time")
             text_to_voice(message, lang='en', accent='co.in')
             return jsonify({'response': message, 'session_id': session_id})
+        
         #set timer
         elif re.search(r'\btimer\b', prompt.lower()):
             print(prompt.lower())
             text_to_voice(prompt.lower(), lang='en', accent='co.in')
             return handle_timer(prompt.lower(), session_id)  # Send response immediately
+        
         #set alarm
         elif "alarm" in prompt.lower():
             text_to_voice("Alarm set", lang='en', accent='co.in')
             alarm_thread = threading.Thread(target=set_alarm, args=(prompt.lower(),), daemon=True)
             alarm_thread.start()
             return jsonify({'response': "⏰ Alarm set", 'session_id': session_id})
+        
         #open file
         elif "open the" in prompt.lower():
             open_file(prompt.lower())
             text_to_voice("Opening File", lang='en', accent='co.in')
             return jsonify({'response': "🗂️ Opening File", 'session_id': session_id})
+        
         #video recording
         elif "video recording" in prompt.lower():
             text_to_voice("Video Recording started press q to stop", lang='en', accent='co.in')
             vedio_thread = threading.Thread(target=video_recording, args=("start",), daemon=True)
             vedio_thread.start()
             return jsonify({'response': "Video Recording started press q to stop", 'session_id': session_id})
+        
         #lauch app
         elif "launch" in prompt.lower() or "start" in prompt.lower() :
             response_status=run_open_app(prompt.lower())
             text_to_voice(response_status, lang='en', accent='co.in')
             return jsonify({'response': response_status, 'session_id': session_id})
+        
         #volume controls   
         elif "volume" in prompt.lower():
            response_status= volume_control(prompt.lower())
            text_to_voice(response_status, lang='en', accent='co.in')
            return jsonify({'response': response_status, 'session_id': session_id})
+       
+       #News open
+        elif "news" in prompt.lower():
+            # Send immediate response
+            immediate_response = "Opening News.."
+            text_to_voice(immediate_response, lang='en', accent='co.in')
+            # Run the news search in a separate thread
+            news_thread = threading.Thread(target=search_google_news, args=(prompt.lower(),))
+            news_thread.start()
+            return jsonify({'response': immediate_response, 'session_id': session_id})
         else:    
         # Default AI response
             history = conversation_history.load_history()
