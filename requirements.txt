@@ -6,4 +6,5 @@ meta_ai_api
 flask
 psutil
 opencv-python
+undetected-chromedriver
 
