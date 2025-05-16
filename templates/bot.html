@@ -1,7 +1,8 @@
 <html>
+
 <head>
     <!-- SEO related -->
-    <title>Chatbot Frontend</title>
+    <title>Lexi-Act</title>
 
     <!-- Meta related -->
     <meta charset="utf-8">
@@ -10,7 +11,8 @@
 
     <!-- Vendor CSS & Style files -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300|Open+Sans:300|Oxygen|Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300|Open+Sans:300|Oxygen|Material+Icons"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 
     <!-- Custom CSS -->
@@ -19,49 +21,28 @@
 
 <body>
     <div class="container">
-        <div class="row padded_row">
-            <!-- Left side content (Help section) -->
-            <div class="col-md-5">
-                <div class="chat_window">
-                    <div class="top_menu">
-                        <div class="titlle">History</div>
-                    </div>
-
-                    <!-- Help container -->
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse1">Session History</a>
-                                </h4>
-                            </div>
-                            <div id="collapse1" class="panel-collapse collapse in">
-                                <div class="panel-body" id="session-history">
-                                    <!-- Session IDs will be displayed here -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div id="user-profile" class="profile-collapsed">
+            <div class="profile-header">
+                <div class="profile-pic" id="profile-pic"></div>
+                <div class="profile-name" id="profile-name"></div>
             </div>
+            <div class="profile-details" id="profile-details">
+                <div id="profile-fullname"></div>
+                <div id="profile-email"></div>
+                <div id="profile-phone"></div>
+            </div>
+        </div>
 
-            <!-- Right side content (Chatbot section) -->
-            <div class="col-md-7">
+
+        <div class="row padded_row">
+            <div class="col-md-8 col-md-offset-2">
                 <div class="chat_window">
                     <div class="top_menu">
                         <div class="titlle">Lexi-Act</div>
                     </div>
 
-                    <!-- Dynamically rendered messages -->
                     <ul class="messages"></ul>
 
-                    <!-- Input for session ID -->
-                    <!-- <div class="bottom_wrapper">
-                        <input id="session_id_input" placeholder="Enter Session ID to switch..." />
-                        <div id="session_id_button" class="app_button_1">Switch Session</div>
-                    </div> -->
-
-                    <!-- Input for user messages -->
                     <div class="bottom_wrapper">
                         <button id="voice_button" class="app_button_1">
                             <i class="fa fa-microphone"></i>
@@ -69,10 +50,10 @@
                         <input id="msg_input" placeholder="Say Hi to begin chat..." />
                         <div id="send_button" class="app_button_1">Send</div>
                     </div>
-                    
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Vendor script files -->
@@ -82,18 +63,18 @@
     <!-- Custom scripts -->
     <script src="static/main.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Fetch session IDs from the server
             $.ajax({
                 url: '/get_session_ids',
                 type: 'GET',
-                success: function(response) {
+                success: function (response) {
                     const sessionHistory = $('#session-history');
                     response.session_ids.forEach(id => {
                         sessionHistory.append(`<div>${id}</div>`); // Display each session ID
                     });
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error("Error fetching session IDs: " + error);
                 }
             });
@@ -123,4 +104,5 @@
         });
     </script>
 </body>
+
 </html>
