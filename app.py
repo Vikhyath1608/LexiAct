@@ -220,7 +220,7 @@ def get_response():
                 reply = handle_email_change(prompt.lower())
                 print("========================",reply)
                 expecting_change = False
-                text_to_voice(reply, lang='en', accent='co.in')
+                #text_to_voice(reply, lang='en', accent='co.in')
                 return jsonify({'response': reply, 'session_id': session_id})
                 
             else:
@@ -228,13 +228,13 @@ def get_response():
                     expecting_change = True
                 reply = handle_email_followup(prompt.lower())
                 print("========================",reply)
-                text_to_voice(reply, lang='en', accent='co.in')
+                #text_to_voice(reply, lang='en', accent='co.in')
                 return jsonify({'response': reply, 'session_id': session_id})
         #send email       
         elif prompt.lower().startswith("send email to") or prompt.lower().startswith("send the email to"):
                 reply = handle_email_command(prompt.lower())
                 print("========================",reply)
-                text_to_voice(reply, lang='en', accent='co.in')
+                #text_to_voice(reply, lang='en', accent='co.in')
                 return jsonify({'response': reply, 'session_id': session_id})
 
         #handle conatcts
