@@ -71,8 +71,8 @@ $('#send_button').on('click', function () {
 });
 
 // Send message on Enter key press
-$(document).ready(function() {
-    $('#msg_input').keydown(function(e) {
+$(document).ready(function () {
+    $('#msg_input').keydown(function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             $('#send_button').click();
@@ -140,4 +140,25 @@ $(window).on('load', function () {
     const sessionId = sessionStorage.getItem('session_id') || createSessionId();
     updateSessionId(sessionId);  // Display the session ID when the page loads
     showBotMessage("Welcome! This is Your Personal Assistant. How can I help you?");
+    loadUserProfile();
 });
+// Fetch user profile from JSON
+function loadUserProfile() {
+    $.getJSON('/static/user.json', function (data) {
+        $('#profile-name').text(data.name);
+        $('#profile-fullname').text("Full Name: " + data.full_name);
+        $('#profile-email').text("Email: " + data.email);
+        $('#profile-phone').text("Phone: " + data.phone);
+        if (data.profile_pic) {
+            $('#profile-pic').css('background-image', `url('${data.profile_pic}')`);
+        }
+    }).fail(function () {
+        console.error("Failed to load user profile.");
+    });
+
+    // Toggle expand/collapse on click
+    $('#user-profile').on('click', function () {
+        $(this).toggleClass('expanded');
+    });
+}
+
